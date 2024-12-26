@@ -1,5 +1,8 @@
 from logic import *
 
+# TODO: make a gui?
+# TODO: make CURRENCY CONVERSION!!!!
+
 while True:
     
     choice = input('''1. length
