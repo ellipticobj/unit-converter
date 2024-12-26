@@ -18,19 +18,19 @@ conv = {
 
 supportedtemps = ["celsius", "farenheit", "kelvin"]
 
-def ctof(celsius):
+def ctof(celsius: int):
     return celsius * 9/5 + 32
 
-def ftoc(farenheit):
+def ftoc(farenheit: int):
     return (farenheit - 32) * 5/9
 
-def ctok(celsius):
+def ctok(celsius: int):
     return celsius + 273.15
 
-def ktoc(kelvins):
+def ktoc(kelvins: int):
     return kelvins - 273.15
 
-def converttemp(val, fromunit, tounit):
+def converttemp(val: int, fromunit: str, tounit: str):
     if fromunit not in supportedtemps:
         raise ValueError(f"Unsupported temperature unit {fromunit}. Please input one of {supportedtemps}")
     
@@ -46,10 +46,13 @@ def converttemp(val, fromunit, tounit):
     elif fromunit == "kelvin":
         return ktoc(val) if tounit == "celsius" else ctof(ktoc(val))
 
-def convertlength(val, fromunit, tounit):
-    # TODO
-    return 0
-
-def convertmass(val, fromunit, tounit):
-    # TODO
-    return 0
+def convert(val: int, fromunit: str, tounit: str, lengthorweight: str):
+    if fromunit not in set(conv[lengthorweight].keys()):
+        raise ValueError(f"Unsupported length unit {fromunit}. Please input a proper unit.")
+    if tounit not in set(conv[lengthorweight].keys()):
+        raise ValueError(f"Unsupported length unit {tounit}. Please input a proper unit.")
+    
+    if fromunit == tounit:
+        return val
+    else:
+        return val * (conv[lengthorweight][fromunit]/conv[lengthorweight][tounit])
