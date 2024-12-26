@@ -2,21 +2,23 @@
 
 conv = {
     "length": {
-        "meters": 1,
-        "kilometers": 1000,
-        "miles": 1000.34,
-        "feet": 0.3048,
-        "inches": 0.0254
+        "mm": 0.001,
+        "cm": 0.01,
+        "m": 1,
+        "km": 1000,
+        "mi": 1000.34,
+        "ft": 0.3048,
+        "in": 0.0254
     },
     "weight": {
-        "kilograms": 1,
-        "grams": 0.001,
-        "pounds": 0.4536,
-        "ounces": 0.0283495
+        "kg": 1,
+        "g": 0.001,
+        "lbs": 0.4536,
+        "oz": 0.0283495
     }
 }
 
-supportedtemps = ["celsius", "farenheit", "kelvin"]
+supportedtemps = {"celsius", "farenheit", "kelvin"}
 
 def ctof(celsius: int):
     return celsius * 9/5 + 32
