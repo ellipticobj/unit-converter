@@ -18,7 +18,9 @@ conv = {
     }
 }
 
-supportedtemps = {"celsius", "farenheit", "kelvin"}
+supportedlengths = ["mm", "cm", "m", "km", "mi", "ft", "in"]
+supportedweights = ["kg", "g", "lbs", "oz"]
+supportedtemps = ["c", "f", "k"]
 
 def ctof(celsius: int):
     return celsius * 9/5 + 32
