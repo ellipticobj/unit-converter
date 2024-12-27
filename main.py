@@ -8,7 +8,8 @@ while True:
     choice = input('''1. length
 2. weight
 3. temperature
-input [1/2/3]: ''').lower().strip()
+4. currency
+input [1/2/3/4]: ''').lower().strip()
 
     if choice == "1":
         print(f"Supported units: {supportedlengths}")
@@ -17,11 +18,7 @@ input [1/2/3]: ''').lower().strip()
             print("invalid unit, please input a proper unit")
             fromunit = input("input unit to convert from: ").lower().strip()
             
-        val = input("input value to convert [integer]: ").strip()
-        while not val.isdigit():
-            print("please input a number")
-            val = input("input value to convert [integer]: ").strip()
-        val = int(val)
+        val = getvalfromuser()
 
         tounit = input("input unit to convert to: ").lower().strip()
         while tounit not in supportedlengths:
@@ -37,11 +34,7 @@ input [1/2/3]: ''').lower().strip()
             print("invalid unit, please input a proper unit")
             fromunit = input("input unit to convert from: ").lower().strip()
             
-        val = input("input value to convert [integer]: ").strip()
-        while not val.isdigit():
-            print("please input a number")
-            val = input("input value to convert [integer]: ").strip()
-        val = int(val)
+        val = getvalfromuser()
 
         tounit = input("input unit to convert to: ").lower().strip()
         while tounit not in supportedweights:
@@ -57,11 +50,7 @@ input [1/2/3]: ''').lower().strip()
             print("invalid unit, please input a proper unit")
             fromunit = input("input unit to convert from: ").lower().strip()
 
-        val = input("input value to convert [integer]: ").strip()
-        while not val.isdigit():
-            print("please input a number")
-            val = input("input value to convert [integer]: ").strip()
-        val = int(val)
+        val = getvalfromuser()
 
         tounit = input("input unit to convert to: ").lower().strip()
         while tounit not in supportedtemps:
@@ -69,7 +58,24 @@ input [1/2/3]: ''').lower().strip()
             tounit = input("input unit to convert from: ").lower().strip()
         
         final = converttemp(val, fromunit, tounit)
+    
+    elif choice == "4":
+        supportedcurrs = getavailablecurrencies()
+        print(f"Supported currencies: {supportedcurrs}")
+        fromunit = input("Input currency to cunvert from: ").upper().strip()
+        while fromunit not in supportedcurrs:
+            print("Please input a proper currency.")
+            fromunit = input("Input currency to convert from: ").upper().strip()
+            
+        val = getvalfromuser()
         
-    print(f"{val} {fromunit} is {final:.2f} {tounit}")
+        tounit = input("Input currency to cunvert to: ").upper().strip()
+        while tounit not in supportedcurrs:
+            print("Please input a proper currency.")
+            tounit = input("Input currency to convert to: ").upper().strip()
+            
+        final = convertcurr(val, fromunit, tounit)
+        
+    print(f"{val} {fromunit} is {final} {tounit}")
     print()
     print()

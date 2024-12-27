@@ -1,4 +1,8 @@
+import os
+import requests
+from dotenv import load_dotenv
 
+load_dotenv()
 
 conv = {
     "length": {
@@ -22,19 +26,19 @@ supportedlengths = ["mm", "cm", "m", "km", "mi", "ft", "in"]
 supportedweights = ["kg", "g", "lbs", "oz"]
 supportedtemps = ["c", "f", "k"]
 
-def ctof(celsius: int):
+def ctof(celsius: int) -> int:
     return celsius * 9/5 + 32
 
-def ftoc(farenheit: int):
+def ftoc(farenheit: int) -> int:
     return (farenheit - 32) * 5/9
 
-def ctok(celsius: int):
+def ctok(celsius: int) -> int:
     return celsius + 273.15
 
-def ktoc(kelvins: int):
+def ktoc(kelvins: int) -> int:
     return kelvins - 273.15
 
-def converttemp(val: int, fromunit: str, tounit: str):
+def converttemp(val: int, fromunit: str, tounit: str) -> int:
     if fromunit not in supportedtemps:
         raise ValueError(f"Unsupported temperature unit {fromunit}. Please input one of {supportedtemps}")
     
@@ -50,7 +54,7 @@ def converttemp(val: int, fromunit: str, tounit: str):
     elif fromunit == "kelvin":
         return ktoc(val) if tounit == "celsius" else ctof(ktoc(val))
 
-def convert(val: int, fromunit: str, tounit: str, lengthorweight: str):
+def convert(val: int, fromunit: str, tounit: str, lengthorweight: str) -> int:
     if fromunit not in set(conv[lengthorweight].keys()):
         raise ValueError(f"Unsupported length unit {fromunit}. Please input a proper unit.")
     if tounit not in set(conv[lengthorweight].keys()):
@@ -60,3 +64,35 @@ def convert(val: int, fromunit: str, tounit: str, lengthorweight: str):
         return val
     else:
         return val * (conv[lengthorweight][fromunit]/conv[lengthorweight][tounit])
+    
+def getavailablecurrencies() -> list:
+    response = requests.get(f"https://api.freecurrencyapi.com/v1/currencies?apikey={os.getenv("APIKEY")}&currencies=")
+    response.raise_for_status()
+    
+    data = response.json()
+    return list(data["data"].keys())
+
+def convertcurr(val: int, basecurr: str, tocurr: str) -> int:
+    if basecurr == tocurr:
+        return val
+    availablecurrs = set(getavailablecurrencies())
+    if basecurr not in availablecurrs:
+        raise ValueError(f"Unsupported currency {basecurr}.")
+    if tocurr not in availablecurrs:
+        raise ValueError(f"Unsupported currency {tocurr}.")
+
+    response = requests.get(f"https://api.freecurrencyapi.com/v1/latest?apikey={os.getenv("APIKEY")}&currencies={tocurr}&base_currency={basecurr}")
+    response.raise_for_status()
+    data = response.json()
+    return data["data"][tocurr]
+
+def getvalfromuser(prompt:str="Input value to convert [number]: ", errormsg:str="Please input a number"):
+    while True:
+        val = input(prompt).strip()
+        try:
+            val = float(val)
+            break
+        except ValueError:
+            print(errormsg)
+    val = float(val)
+    return val
