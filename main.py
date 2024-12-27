@@ -1,7 +1,6 @@
 from logic import *
 
 # TODO: make a gui?
-# TODO: make CURRENCY CONVERSION!!!!
 
 while True:
     
@@ -73,9 +72,19 @@ input [1/2/3/4]: ''').lower().strip()
         while tounit not in supportedcurrs:
             print("Please input a proper currency.")
             tounit = input("Input currency to convert to: ").upper().strip()
-            
-        final = convertcurr(val, fromunit, tounit)
         
+        print()
+        print("retrieving data... please wait a moment")
+        final = convertcurr(val, fromunit, tounit)
+    else:
+        print()
+        print("Please input a valid option")
+        print()
+        input("Press ENTER to continue ")
+        print()
+        continue
+        
+    print()
     print(f"{val} {fromunit} is {final} {tounit}")
     print()
-    print()
+    input("Press ENTER to continue ")
