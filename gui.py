@@ -4,6 +4,8 @@ from ttkbootstrap.constants import *
 
 root = ttk.Window(themename="minty")
 root.title("converter")
+root.geometry("400x200")
+root.minsize(100, 100)
 
 conversiontype = ttk.StringVar()
 conversiontype.set("select conversion type...")
