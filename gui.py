@@ -4,8 +4,12 @@ from ttkbootstrap.constants import *
 
 root = ttk.Window(themename="minty")
 root.title("converter")
-root.geometry("400x200")
-root.minsize(100, 100)
+root.geometry("400x400")
+root.minsize(400, 400)
+
+default_font = ("Arial", 12)
+style = ttk.Style()
+style.configure(".", font=default_font)
 
 def showpage(page):
     for frame in frames.values():
@@ -31,8 +35,8 @@ def checktype():
             typeerrorlabel.config(text=f"error retrieving currencies: {e}")
             units = []
         
-    fromunit.set("select unit")
-    tounit.set("select unit")
+    fromunit.set(units[0])
+    tounit.set(units[0])
     
     frommenu["menu"].delete(0, "end")
     tomenu["menu"].delete(0, "end")
@@ -47,8 +51,16 @@ def convertfunc():
     from_unit = fromunit.get()
     to_unit = tounit.get()
     
+    value = valinp.get().strip()
+    
+    print(value == "")
+    
+    if value == "":
+        valerrorlabel.config(text="please enter a number")
+        return
+    
     try:
-        value = float(valinp.get())
+        value = float(value.strip())
     except ValueError:
         valerrorlabel.config(text="please enter a valid number")
         return
@@ -61,7 +73,7 @@ def convertfunc():
         elif choice == "currency":
             result = convertcurr(value, from_unit, to_unit)
         
-        resultlabel.config(text=f"{value} {fromunit} is {result:.2f} {tounit}")
+        resultlabel.config(text=f"{value} {from_unit} is {result:.2f} {to_unit}")
         showpage("result")
     except Exception as e:
         resulterrorlabel.config(text=f"conversion error: {e}")
@@ -120,21 +132,18 @@ valinp.pack(pady=5)
 valerrorlabel = ttk.Label(frame2, text="", bootstyle="danger")
 valerrorlabel.pack(pady=5)
 
-convertbutton = ttk.Button(frame2, text="convert", command=convertfunc(), bootstyle="success")
+convertbutton = ttk.Button(frame2, text="convert", command=lambda: (convertfunc(), showpage("result")), bootstyle="success")
 convertbutton.pack(pady=10)
 
 
 frame3 = ttk.Frame(root)
 frames["result"] = frame3
 
-resultlabel = ttk.Label(frame3, text="")
+resultlabel = ttk.Label(frame3, text="", font=("Arial", 16))
 resultlabel.pack(pady=10)
 
 resulterrorlabel = ttk.Label(frame3, text="")
 resulterrorlabel.pack(pady=5)
-
-restartbutton = ttk.Button(frame3, text="restart", command=showpage("selecttype"))
-restartbutton.pack(pady=10)
 
 showpage("selecttype")
 root.mainloop()
