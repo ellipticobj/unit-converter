@@ -10,7 +10,10 @@ conversiontype.set("select conversion type...")
 conversiontypes = ["length", "weight", "temperature", "currency"]
 
 typelabel = ttk.Label(root, text="conversion type: ")
-typelabel.pack(bootstyle="default", pady=5)
+typelabel.pack(pady=5)
 
 typemenu = ttk.OptionMenu(root, conversiontype, *conversiontypes)
 typemenu.pack(pady=5)
+
+
+root.mainloop()
